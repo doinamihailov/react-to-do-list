@@ -13,6 +13,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import CloseIcon from '@material-ui/icons/Close';
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 
 import './List.css';
 import { Container } from '@material-ui/core';
@@ -31,6 +32,7 @@ class List extends Component {
             id: -1,
         };
         this.newItem = this.newItem.bind(this);
+        this.sortList = this.sortList.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -40,6 +42,12 @@ class List extends Component {
     newItem() {
         this.setState({
             newI: true
+        })
+    }
+    sortList() {
+        const newlist = this.state.elements.sort((a, b) => (a.name > b.name) ? 1 : -1)
+        this.setState({
+            elements: newlist
         })
     }
 
@@ -134,7 +142,7 @@ class List extends Component {
                                 onClick={this.handleClick}
                                 style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}
                             >
-                                <FavoriteBorderIcon style={{marginLeft : '10px', marginTop: '0px'}}/>
+                                <FavoriteBorderIcon style={{marginLeft : '10px', marginTop: '0px', color: '#E65100'}}/>
 
                             </button>
                             <button type="submit" 
@@ -144,6 +152,8 @@ class List extends Component {
                                 <CloseIcon/>
                             </button>
                         </form>
+                    </TableCell>
+                    <TableCell>
                     </TableCell>
                 </TableRow>
             )
@@ -163,7 +173,7 @@ class List extends Component {
         return (
             <button 
                 onClick={() => { this.checkItem(item.id)}}
-                style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}
+                style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, color : '#22E600'}}
             >
                 <CheckCircleOutlineIcon/>
             </button>
@@ -185,7 +195,7 @@ class List extends Component {
                             onClick={this.handleEdit}
                             style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}
                         >
-                            <FavoriteBorderIcon style={{marginLeft : '10px', marginTop: '0px'}}/>
+                            <FavoriteBorderIcon style={{marginLeft : '10px', marginTop: '0px', color: '#E65100'}}/>
 
                         </button>
                         <button type="submit" 
@@ -201,7 +211,7 @@ class List extends Component {
     render() {
         return (
             <div>
-                <h1>
+                <h1 style={{fontFamily: "Archivo Black"}}>
                     TO DO list
                 </h1>
                 <TableContainer >
@@ -232,14 +242,18 @@ class List extends Component {
                             </TableRow>
                     )}
                             {this.insertNew()}
-                            <TableRow borderBottom="none">
+                            <TableRow >
                                 <TableCell>
                                 </TableCell>
                                 <TableCell align='center'border="none">
                                 <button onClick={this.newItem} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}>
                                     <AddIcon/>
                                 </button>
-
+                                <button onClick={this.sortList} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, marginLeft : '40px'}}>
+                                    <SortByAlphaIcon/>
+                                </button>
+                                </TableCell>
+                                <TableCell>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
