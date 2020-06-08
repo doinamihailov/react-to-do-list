@@ -14,6 +14,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import CloseIcon from '@material-ui/icons/Close';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/IconButton';
 
 import './List.css';
 import { Container } from '@material-ui/core';
@@ -30,14 +33,27 @@ class List extends Component {
             newI : false,
             value : '',
             id: -1,
+            anchorEl: null,
         };
         this.newItem = this.newItem.bind(this);
         this.sortList = this.sortList.bind(this);
+        this.sortListDesc = this.sortListDesc.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
     }
+
+    handleClickOrder = (event) => {
+        this.setState({
+            anchorEl: event.currentTarget,
+        })
+      };
+      handleCloseOrder = () => {
+            this.setState({
+            anchorEl: null
+            })
+       };
 
     newItem() {
         this.setState({
@@ -46,6 +62,12 @@ class List extends Component {
     }
     sortList() {
         const newlist = this.state.elements.sort((a, b) => (a.name > b.name) ? 1 : -1)
+        this.setState({
+            elements: newlist
+        })
+    }
+    sortListDesc() {
+        const newlist = this.state.elements.sort((a, b) => (a.name < b.name) ? 1 : -1)
         this.setState({
             elements: newlist
         })
@@ -200,7 +222,7 @@ class List extends Component {
                         </button>
                         <button type="submit" 
                             onClick={() => { this.handleCloseEdit(item)}}
-                            style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}
+                            style={{padding : 0, border: 'none', marginLeft : '0px', background : 'none', cursor : 'pointer', outline : 0}}
                         >
                             <CloseIcon/>
                         </button>
@@ -218,7 +240,7 @@ class List extends Component {
                     <Table >
                         <TableBody> 
                             { this.state.elements.map((item,i) => 
-                            <TableRow>
+                            <TableRow >
                                 <TableCell align='center'>
                                     {this.renderCheck(item)}
                                 </TableCell>
@@ -242,23 +264,40 @@ class List extends Component {
                             </TableRow>
                     )}
                             {this.insertNew()}
-                            <TableRow >
-                                <TableCell>
-                                </TableCell>
-                                <TableCell align='center'border="none">
-                                <button onClick={this.newItem} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0}}>
-                                    <AddIcon/>
-                                </button>
-                                <button onClick={this.sortList} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, marginLeft : '40px'}}>
-                                    <SortByAlphaIcon/>
-                                </button>
-                                </TableCell>
-                                <TableCell>
-                                </TableCell>
-                            </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div style={{marginLeft : '-60px', marginTop : '30px'}}>
+                    <div style={{align : 'center'}}>
+                    <button onClick={this.newItem} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, marginRight : '40px'}}>
+                        <AddIcon/>
+                    </button>
+
+                    <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={this.handleClickOrder}
+                    >
+                         <SortByAlphaIcon style={{marginTop : '-15px'}}/>
+                    </IconButton>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={this.state.anchorEl}
+                        keepMounted
+                        open={Boolean(this.state.anchorEl)}
+                        onClose={this.handleCloseOrder}
+                    >
+                    <MenuItem style={{color: 'black'}} onClick={this.sortList}>Sort A -> Z</MenuItem>
+                    <MenuItem style={{color: 'black'}} onClick={this.sortListDesc}>Sort Z -> A</MenuItem>
+                    </Menu>
+                    {/*
+                    <button onClick={this.sortList} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, marginLeft : '40px'}}>
+                        <SortByAlphaIcon/>
+                    </button>
+                    */}
+                    </div>
+                </div>
             </div>
         )
     }
