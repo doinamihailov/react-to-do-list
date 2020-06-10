@@ -27,7 +27,7 @@ class List extends Component {
         this.state = {
             elements : [
                 { id: 1, name : 'Groceries', check : false, edit : false},
-                { id: 2, name : 'Homework', check : false, edit : false},
+                { id: 2, name : 'Call mom and dad', check : false, edit : false},
                 { id: 3, name : 'Feed the dog', check : false, edit : false}
             ],
             newI : false,
@@ -106,6 +106,9 @@ class List extends Component {
     
     handleSubmit(event) {
         var newlist = this.state.elements;
+        if (this.state.value[0] >= 'a' && this.state.value[0] <= 'z') {
+            this.state.value = this.state.value[0].toUpperCase() + this.state.value.slice(1);
+        }
         if (this.state.value !== '')
             newlist.push(
                 { id : newlist.length + 1, name : this.state.value, check : false, edit : false }
@@ -158,7 +161,15 @@ class List extends Component {
                     <TableCell align='center' width='80%' >
                         <form onSubmit={this.handleSubmit} style={{marginLeft : '50px'}}>
                             <label>
-                            <input type="text" value={this.state.value} onChange={this.handleChange} />
+                            <textarea
+                                type="text" 
+                                value={this.state.value} 
+                                onChange={this.handleChange} 
+                                style={{
+                                    height: '20px',
+                                    width: '150px'}}
+                            >        
+                            </textarea>
                             </label>
                             <button type="submit" 
                                 onClick={this.handleClick}
@@ -211,7 +222,15 @@ class List extends Component {
         return (
             <form onSubmit={this.handleEdit} style={{marginLeft : '50px'}}>
                         <label>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        <textarea
+                                type="text" 
+                                value={this.state.value} 
+                                onChange={this.handleChange} 
+                                style={{
+                                    height: '20px',
+                                    width: '150px'}}
+                            >        
+                            </textarea>
                         </label>
                         <button type="submit" 
                             onClick={this.handleEdit}
@@ -291,11 +310,6 @@ class List extends Component {
                     <MenuItem style={{color: 'black'}} onClick={this.sortList}>Sort A -> Z</MenuItem>
                     <MenuItem style={{color: 'black'}} onClick={this.sortListDesc}>Sort Z -> A</MenuItem>
                     </Menu>
-                    {/*
-                    <button onClick={this.sortList} style={{padding : 0, border: 'none', background : 'none', cursor : 'pointer', outline : 0, marginLeft : '40px'}}>
-                        <SortByAlphaIcon/>
-                    </button>
-                    */}
                     </div>
                 </div>
             </div>
